@@ -1,0 +1,178 @@
+services:
+  # PostgreSQL pour Index Service
+  postgres-index:
+    image: postgres:15-alpine
+    container_name: postgres-index
+    environment:
+      POSTGRES_DB: index_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_index_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL pour Homme Service
+  postgres-homme:
+    image: postgres:15-alpine
+    container_name: postgres-homme
+    environment:
+      POSTGRES_DB: homme_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_homme_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL pour Femme Service
+  postgres-femme:
+    image: postgres:15-alpine
+    container_name: postgres-femme
+    environment:
+      POSTGRES_DB: femme_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_femme_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Index Service (API Gateway + Auth)
+  index-service:
+    build:
+      context: ./index-service
+      dockerfile: Dockerfile
+    container_name: index-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres-index:5432/index_db
+      SPRING_R2DBC_USERNAME: postgres
+      SPRING_R2DBC_PASSWORD: postgres
+      HOMME_SERVICE_URL: http://homme-service:8081
+      FEMME_SERVICE_URL: http://femme-service:8082
+    depends_on:
+      postgres-index:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+  # Homme Service
+  homme-service:
+    build:
+      context: ./homme-service
+      dockerfile: Dockerfile
+    container_name: homme-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-homme:5432/homme_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      postgres-homme:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+  # Femme Service
+  femme-service:
+    build:
+      context: ./femme-service
+      dockerfile: Dockerfile
+    container_name: femme-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-femme:5432/femme_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      postgres-femme:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+
+  # Frontend Homme
+  frontend_homme:
+    build:
+      context: ./frontend_homme
+      dockerfile: Dockerfile
+    container_name: frontend_homme
+    ports:
+      - "3001:3001"
+    depends_on:
+      - index-service
+      - homme-service
+      - femme-service
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+  # Frontend Femme
+  frontend_femme:
+    build:
+      context: ./frontend_femme
+      dockerfile: Dockerfile
+    container_name: frontend_femme
+    ports:
+      - "3002:3002"
+    depends_on:
+      - index-service
+      - homme-service
+      - femme-service
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+  # Frontend Index
+  frontend_index:
+    build:
+      context: ./frontend_index
+      dockerfile: Dockerfile
+    container_name: frontend_index
+    ports:
+      - "3000:3000"
+    depends_on:
+      - index-service
+      - homme-service
+      - femme-service
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+
+networks:
+  microservices-network:
+    driver: bridge
+
+volumes:
+  postgres_index_data:
+  postgres_homme_data:
+  postgres_femme_data:

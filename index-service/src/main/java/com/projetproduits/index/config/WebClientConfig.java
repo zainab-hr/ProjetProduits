@@ -1,0 +1,34 @@
+package com.projetproduits.index.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@Configuration
+public class WebClientConfig {
+
+    @Value("${homme-service.url}")
+    private String hommeServiceUrl;
+
+    @Value("${femme-service.url}")
+    private String femmeServiceUrl;
+
+    @Bean
+    public WebClient hommeServiceWebClient() {
+        return WebClient.builder()
+                .baseUrl(hommeServiceUrl)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+
+    @Bean
+    public WebClient femmeServiceWebClient() {
+        return WebClient.builder()
+                .baseUrl(femmeServiceUrl)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+}

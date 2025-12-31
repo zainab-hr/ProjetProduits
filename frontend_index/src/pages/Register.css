@@ -1,0 +1,234 @@
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f0eb 0%, #e8e0d8 100%);
+  padding: 40px 20px;
+}
+
+.register-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(139, 115, 95, 0.15);
+  padding: 40px;
+  width: 100%;
+  max-width: 460px;
+  border: 1px solid rgba(195, 177, 160, 0.2);
+}
+
+.register-logo {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #c9a88c 0%, #a68b6a 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.register-logo i {
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.register-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #3d3229;
+  margin-bottom: 8px;
+  font-family: 'Playfair Display', serif;
+}
+
+.register-subtitle {
+  color: #8b7355;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.register-form {
+  margin-top: 28px;
+}
+
+.register-input-group {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.register-input-group input {
+  width: 100%;
+  padding: 14px 18px 14px 46px;
+  border: 2px solid #e8e0d8;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #3d3229;
+  background: #faf8f6;
+  transition: all 0.3s ease;
+}
+
+.register-input-group input:focus {
+  outline: none;
+  border-color: #c9a88c;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(201, 168, 140, 0.15);
+}
+
+.register-input-group input::placeholder {
+  color: #a69a8c;
+}
+
+.register-input-group .input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b8a596;
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+.register-input-group input:focus ~ .input-icon {
+  color: #c9a88c;
+}
+
+.register-genre-section {
+  margin-bottom: 20px;
+}
+
+.register-genre-label {
+  display: block;
+  color: #5a4d40;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.register-genre-options {
+  display: flex;
+  gap: 12px;
+}
+
+.register-genre-option {
+  flex: 1;
+  position: relative;
+}
+
+.register-genre-option input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.register-genre-option label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border: 2px solid #e8e0d8;
+  border-radius: 12px;
+  background: #faf8f6;
+  color: #8b7355;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.register-genre-option input:checked + label {
+  border-color: #c9a88c;
+  background: linear-gradient(135deg, rgba(201, 168, 140, 0.1) 0%, rgba(166, 139, 106, 0.1) 100%);
+  color: #a68b6a;
+}
+
+.register-genre-option label:hover {
+  border-color: #c9a88c;
+}
+
+.register-genre-option label i {
+  font-size: 16px;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #c9a88c 0%, #a68b6a 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+}
+
+.register-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(166, 139, 106, 0.35);
+}
+
+.register-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.register-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.register-divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  color: #b8a596;
+  font-size: 13px;
+}
+
+.register-divider::before,
+.register-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e8e0d8;
+}
+
+.register-divider span {
+  padding: 0 16px;
+}
+
+.register-login-link {
+  text-align: center;
+  color: #8b7355;
+  font-size: 14px;
+}
+
+.register-login-link a {
+  color: #a68b6a;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.register-login-link a:hover {
+  color: #8b6f4e;
+  text-decoration: underline;
+}
+
+.register-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
