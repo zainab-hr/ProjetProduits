@@ -64,6 +64,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
+    // Redirect to main homepage with logout flag
+    window.location.href = 'http://localhost:3000?logout=true';
   };
 
   return (

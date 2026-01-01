@@ -4,6 +4,7 @@ const UserModal = ({ show, onHide, onSubmit, user, type, showGenreSelect = false
   const [formData, setFormData] = useState({
     nom: '',
     email: '',
+    age: '',
     genre: type || 'homme',
   });
 
@@ -12,12 +13,14 @@ const UserModal = ({ show, onHide, onSubmit, user, type, showGenreSelect = false
       setFormData({
         nom: user.nom || '',
         email: user.email || '',
+        age: user.age || '',
         genre: type || 'homme',
       });
     } else {
       setFormData({
         nom: '',
         email: '',
+        age: '',
         genre: type || 'homme',
       });
     }
@@ -117,6 +120,20 @@ const UserModal = ({ show, onHide, onSubmit, user, type, showGenreSelect = false
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Âge *</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleChange}
+                  min="1"
+                  max="150"
                   required
                 />
               </div>

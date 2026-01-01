@@ -59,8 +59,13 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     await AuthService.logout();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
+    // Force page reload to clear all state
+    window.location.href = '/';
   };
 
   return (

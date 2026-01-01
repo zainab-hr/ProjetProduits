@@ -118,6 +118,37 @@ services:
       - microservices-network
     restart: unless-stopped
 
+  # ML Service for Gender Prediction
+  ml-service:
+    build:
+      context: ./ml-service
+      dockerfile: Dockerfile
+    container_name: ml-service
+    ports:
+      - "8000:8000"
+    environment:
+      HOMME_DB_HOST: postgres-homme
+      HOMME_DB_PORT: 5432
+      HOMME_DB_NAME: homme_db
+      HOMME_DB_USER: postgres
+      HOMME_DB_PASSWORD: postgres
+      FEMME_DB_HOST: postgres-femme
+      FEMME_DB_PORT: 5432
+      FEMME_DB_NAME: femme_db
+      FEMME_DB_USER: postgres
+      FEMME_DB_PASSWORD: postgres
+    depends_on:
+      postgres-homme:
+        condition: service_healthy
+      postgres-femme:
+        condition: service_healthy
+      homme-service:
+        condition: service_started
+      femme-service:
+        condition: service_started
+    networks:
+      - microservices-network
+    restart: unless-stopped
 
   # Frontend Homme
   frontend_homme:

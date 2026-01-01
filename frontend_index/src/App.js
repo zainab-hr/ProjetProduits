@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -49,11 +49,32 @@ const PublicRoute = ({ children }) => {
   return !isAuthenticated ? children : <Navigate to="/dashboard" />;
 };
 
+// Component to handle logout from other ports
+function LogoutHandler() {
+  const location = useLocation();
+  
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('logout') === 'true') {
+      // Clear all auth data
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      // Remove the query parameter and reload
+      window.history.replaceState({}, document.title, '/');
+      window.location.reload();
+    }
+  }, [location]);
+  
+  return null;
+}
+
 function AppContent() {
   const { isAuthenticated } = useAuth();
 
   return (
     <>
+      <LogoutHandler />
       {isAuthenticated && <Navbar />}
       {isAuthenticated && <CartDrawer />}
       <Routes>

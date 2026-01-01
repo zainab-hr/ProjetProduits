@@ -59,8 +59,13 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     await AuthService.logout();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
+    // Redirect to main homepage with logout flag
+    window.location.href = 'http://localhost:3000?logout=true';
   };
 
   return (

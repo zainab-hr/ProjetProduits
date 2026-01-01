@@ -32,9 +32,18 @@ const Login = () => {
       if (response.success) {
         toast.success('Connexion réussie!');
         const user = response.data?.user;
+        const userRole = user?.role;
         const userGenre = user?.genre;
         const userId = user?.id;
-        console.log('User ID:', userId, 'Genre:', userGenre);
+        console.log('User ID:', userId, 'Role:', userRole, 'Genre:', userGenre);
+        
+        // Admin users always go to dashboard
+        if (userRole === 'ADMIN') {
+          navigate('/dashboard');
+          return;
+        }
+        
+        // Regular users go to their genre-specific shop
         if (userGenre === 'HOMME' && userId) {
           const url = 'http://localhost:3001/shop/' + userId;
           console.log('Redirecting to:', url);

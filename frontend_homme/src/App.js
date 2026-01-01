@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/AuthContext';
@@ -31,12 +31,29 @@ function useTokenFromUrl() {
   }, []);
 }
 
+// --- Gestion du logout cross-port ---
+function LogoutHandler() {
+  const location = useLocation();
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('logout') === 'true') {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      window.history.replaceState({}, document.title, '/');
+      window.location.href = 'http://localhost:3000';
+    }
+  }, [location]);
+  return null;
+}
+
 // Removed PrivateRoute and PublicRoute to allow open navigation
 
 function AppContent() {
   useTokenFromUrl();
   return (
     <>
+      <LogoutHandler />
       <Navbar />
       <CartDrawer />
       <Routes>

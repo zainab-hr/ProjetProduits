@@ -59,6 +59,10 @@ const UsersHomme = () => {
   const handleSubmit = async (formData) => {
     try {
       const { genre, ...userData } = formData;
+      // Convert age to integer
+      if (userData.age) {
+        userData.age = parseInt(userData.age, 10);
+      }
       if (selectedUser) {
         await HommeService.updateUser(selectedUser.id, userData);
         toast.success('Utilisateur modifié avec succès');
