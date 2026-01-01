@@ -18,6 +18,8 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/interactions")
+
+@CrossOrigin(origins = "http://localhost:3002")
 @RequiredArgsConstructor
 public class InteractionFemmeController {
 

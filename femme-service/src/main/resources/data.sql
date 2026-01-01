@@ -1,5 +1,8 @@
 -- Clear existing products to prevent duplicates
-DELETE FROM produits_femme;
+TRUNCATE TABLE produits_femme CASCADE;
+
+-- Reset sequence for clean IDs
+ALTER SEQUENCE IF EXISTS produits_femme_id_seq RESTART WITH 1;
 
 -- Insert 20 Women's Products
 INSERT INTO produits_femme (nom, categorie, prix, description, image_url, created_at, updated_at) VALUES
@@ -22,5 +25,5 @@ INSERT INTO produits_femme (nom, categorie, prix, description, image_url, create
 ('Crossbody Bag Black', 'Sacs', 79.99, 'Compact crossbody bag in black leather. Practical and chic.', 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400', NOW(), NOW()),
 ('Cashmere Turtleneck', 'Pulls', 159.99, 'Soft cashmere turtleneck in ivory. Winter luxury.', 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400', NOW(), NOW()),
 ('Cocktail Dress Navy', 'Robes', 179.99, 'Elegant navy cocktail dress with lace details. Party perfect.', 'https://images.unsplash.com/photo-1572804013427-4d7ca7268217?w=400', NOW(), NOW()),
-('Gold Hoop Earrings', 'Bijoux', 49.99, 'Classic gold hoop earrings. Everyday glamour.', 'https://images.unsplash.com/photo-1630019852942-f89202989a59?w=400', NOW(), NOW())
-ON CONFLICT DO NOTHING;
+('Gold Hoop Earrings', 'Bijoux', 49.99, 'Classic gold hoop earrings. Everyday glamour.', 'https://images.unsplash.com/photo-1630019852942-f89202989a59?w=400', NOW(), NOW());
+

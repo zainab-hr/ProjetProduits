@@ -24,27 +24,25 @@ const Dashboard = () => {
   }, [user]);
 
   const loadStats = async () => {
-    try {
-      // Admin sees all stats
-      const [hommeProducts, hommeUsers, femmeProducts, femmeUsers] = await Promise.all([
-        HommeService.getAllProduits().catch(() => ({ data: [] })),
-        HommeService.getAllUsers().catch(() => ({ data: [] })),
-        FemmeService.getAllProduits().catch(() => ({ data: [] })),
-        FemmeService.getAllUsers().catch(() => ({ data: [] })),
-      ]);
-
-      setStats({
-        hommeProducts: hommeProducts.data?.length || 0,
-        hommeUsers: hommeUsers.data?.length || 0,
-        femmeProducts: femmeProducts.data?.length || 0,
-        femmeUsers: femmeUsers.data?.length || 0,
-      });
-    } catch (error) {
-      console.error('Error loading stats:', error);
-      toast.error('Erreur lors du chargement des statistiques');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(false); // Show UI immediately
+    
+    // Load each stat completely independently - no waiting for others
+    // Each request updates the UI as soon as it completes
+    HommeService.getAllProduits()
+      .then(res => setStats(prev => ({ ...prev, hommeProducts: res.data?.length || 0 })))
+      .catch(err => console.warn('Service homme produits unavailable:', err.message));
+    
+    HommeService.getAllUsers()
+      .then(res => setStats(prev => ({ ...prev, hommeUsers: res.data?.length || 0 })))
+      .catch(err => console.warn('Service homme users unavailable:', err.message));
+    
+    FemmeService.getAllProduits()
+      .then(res => setStats(prev => ({ ...prev, femmeProducts: res.data?.length || 0 })))
+      .catch(err => console.warn('Service femme produits unavailable:', err.message));
+    
+    FemmeService.getAllUsers()
+      .then(res => setStats(prev => ({ ...prev, femmeUsers: res.data?.length || 0 })))
+      .catch(err => console.warn('Service femme users unavailable:', err.message));
   };
 
   const handleProductCreated = () => {

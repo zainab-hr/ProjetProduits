@@ -66,11 +66,36 @@ const ClientDashboard = () => {
     });
   };
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = async (product) => {
     addToCart(product);
     toast.success(`🛒 "${product.nom}" ajouté au panier`, {
       icon: '🛒'
     });
+
+    // Affiche le body envoyé à l'API d'interaction
+    console.log({
+      userId: Number(userId),
+      produitId: product.id,
+      typeInteraction: 'ADD_TO_CART'
+    });
+
+    // Appel API interaction
+    try {
+      await fetch('http://localhost:8082/interactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: Number(userId),
+          produitId: product.id,
+          typeInteraction: 'ADD_TO_CART'
+        })
+      });
+    } catch (error) {
+      console.error('Erreur lors de l\'enregistrement de l\'interaction', error);
+    }
   };
 
   const categories = [...new Set(products.map(p => p.categorie).filter(Boolean))].sort();

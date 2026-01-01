@@ -2,6 +2,6 @@ package com.projetproduits.femme.entity;
 
 public enum TypeInteraction {
     VIEW,
-    LIKE,
+    ADD_TO_CART,
     PURCHASE
 }

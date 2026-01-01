@@ -1,5 +1,8 @@
 -- Clear existing products to prevent duplicates
-DELETE FROM produits_homme;
+TRUNCATE TABLE produits_homme CASCADE;
+
+-- Reset sequence for clean IDs
+ALTER SEQUENCE IF EXISTS produits_homme_id_seq RESTART WITH 1;
 
 -- Insert 20 Men's Products
 INSERT INTO produits_homme (nom, categorie, prix, description, image_url, created_at, updated_at) VALUES

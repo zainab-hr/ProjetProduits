@@ -24,8 +24,8 @@ const Navbar = () => {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark" style={{ 
         background: user?.genre === 'HOMME' 
-          ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
-          : 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+          ? 'linear-gradient(135deg, #e8d5c4 0%, #c9a88e 100%)' 
+          : 'linear-gradient(135deg, #f5e6d3 0%, #d4a574 100%)'
       }}>
         <div className="container-fluid">
           <Link className="navbar-brand" to="/shop">
@@ -70,30 +70,11 @@ const Navbar = () => {
                   )}
                 </button>
               </li>
-              
-              <li className="nav-item dropdown">
-                <a 
-                  className="nav-link dropdown-toggle" 
-                  href="#" 
-                  role="button" 
-                  data-bs-toggle="dropdown"
-                >
-                  <i className="fas fa-user-circle me-1"></i>
-                  {user?.username}
-                </a>
-                <ul className="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <span className="dropdown-item-text text-muted">
-                      <small>{user?.email}</small>
-                    </span>
-                  </li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li>
-                    <button className="dropdown-item" onClick={handleLogout}>
-                      <i className="fas fa-sign-out-alt me-2"></i> Déconnexion
-                    </button>
-                  </li>
-                </ul>
+              {/* Logout Button Only */}
+              <li className="nav-item">
+                <button className="btn btn-danger nav-link" style={{ color: '#fff' }} onClick={handleLogout}>
+                  <i className="fas fa-sign-out-alt me-2"></i> Déconnexion
+                </button>
               </li>
             </ul>
           </div>
